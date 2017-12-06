@@ -3,35 +3,36 @@
 ### YOU WILL NEED csvtool, curl and exiftool
 
 ### Parameters ###
-DIR=~/avatar
+INPUT_DIR=./data
+OUTPUT_DIR=~/avatar
 
 ### Body ###
 
-if [ ! -d $DIR ]; then
-  echo "Make directory $DIR"
-  mkdir $DIR;
+if [ ! -d $OUTPUT_DIR ]; then
+  echo "Make directory $OUTPUT_DIR"
+  mkdir $OUTPUT_DIR;
 fi
 
 
-csvtool col 29  google.csv > temp-google.csv
-csvtool col 31  google.csv >> temp-google.csv
-csvtool col 33  google.csv >> temp-google.csv
+csvtool col 29  $INPUT_DIR/google.csv > temp-google.csvN
+csvtool col 31  $INPUT_DIR/google.csv >> temp-google.csv
+csvtool col 33  $INPUT_DIR/google.csv >> temp-google.csv
 
 while read -r LINE
 do
     if [[ $LINE =~ .*@.* ]]
     then
 	echo "searching picture for $LINE"
-	./gravatar.sh $LINE $DIR
-	./identify.sh $LINE $DIR
-	#./avatarapi.sh $LINE $DIR
+	./gravatar.sh $LINE $OUTPUT_DIR
+	./identify.sh $LINE $OUTPUT_DIR
+	#./avatarapi.sh $LINE $OUTPUT_DIR
     sleep 5s
     fi
 done < temp-google.csv
 
 rm temp-google.csv
 
-cd $DIR;
+cd $OUTPUT_DIR;
 
 exiftool -if '$filetype eq "JPEG"' -filename=%f.jpg \
 -execute -if '$filetype eq "PNG"' -filename=%f.png \
