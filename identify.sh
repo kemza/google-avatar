@@ -2,8 +2,8 @@
 
 ### Parameters ###
 EMAIL="$1"
-DIR="$2"
-FILENAME=$DIR/identify-$1
+OUTPUT_DIR="$2"
+FILENAME=$OUTPUT_DIR/identify-$1
 ESC_FILENAME="${FILENAME//./_}"
 
 URL="https://image.devidentify.com/$1" #?default=null
